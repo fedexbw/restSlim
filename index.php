@@ -1,20 +1,33 @@
 <?php
+/*
+ *  Este archivo corresponde a la implementación de un  web service por medio de REST en PHP atravez del Framework
+ */
+
 //se incluye la libreria de Slim
 require 'Slim/Slim.php';
-//require 'Slim/Middleware.php';
+// se incluye  'Slim/Middleware/HttpBasicAuth.php' para realizar la utenticacion de usuario;
 require 'Slim/Extras/Middleware/HttpBasicAuth.php';
 
 //se instancia un objeto de la clase slim
 $app = new Slim\Slim();
 
-$app->add(new \Slim\Extras\Middleware\HttpBasicAuth('fede','123456'));
+// se especifica que para acceder a los metodos del objeto app se requiere login de usuario 
+$app->add(new \Slim\Extras\Middleware\HttpBasicAuth('usuario','123456'));
+
+// se definen los metodos  por los cuales se accedera por medio de peticion GET, el primer parametro indica como sera la ruta de acceso, el segundo paramentro el nombre del metodo
 $app->get('/usuarios','getUsuarios');
+// en este caso la ruta se indica que se enviara un parametro correspondiente al id de Usuario a consultar (entero)
 $app->get('/usuarios/:id','getUsuario');
+//idem al anterior
 $app->get('/usuarios/buscar/:query','findXName');
+// se definen los metodos  por los cuales se accedera por medio de peticion POST, el primer parametro indica como sera la ruta de acceso, el segundo paramentro el nombre del metodo
 $app->post('usuarios','addUsuario');
+// se definen los metodos  por los cuales se accedera por medio de peticion PUT, el primer parametro indica como sera la ruta de acceso, el segundo paramentro el nombre del metodo
 $app->put('/usuarios/:id','updateUsuario');
+// se definen los metodos  por los cuales se accedera por medio de peticion DELETE, el primer parametro indica como sera la ruta de acceso, el segundo paramentro el nombre del metodo
 $app->delete('/usuarios/:id','deleteUsuario');
 
+// habilita al objeto para que pueda ejecutar los metodos solocitados por los clientes
 $app->run();
 
 // metodo para realizar la conexion al a base de datos
